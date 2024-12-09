@@ -1,0 +1,32 @@
+{"properties": [
+  {
+    "name": "jwt.private-key-path",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.private-key-path'"
+  },
+  {
+    "name": "jwt.public-key-path",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.public-key-path'"
+  },
+  {
+    "name": "jwt.refresh-expiration-ms",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.refresh-expiration-ms'"
+  },
+  {
+    "name": "jwt.expiration-ms",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expiration-ms'"
+  },
+  {
+    "name": "jwt.issuer",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.issuer'"
+  },
+  {
+    "name": "server.servlet.logging.enable-logging-request-details",
+    "type": "java.lang.String",
+    "description": "A description for 'server.servlet.logging.enable-logging-request-details'"
+  }
+]}
