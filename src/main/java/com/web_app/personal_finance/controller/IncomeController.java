@@ -46,10 +46,10 @@ public class IncomeController {
 	}
 
 	@GetMapping
-	public Page<IncomeProjection> getIncomes(@AuthenticationPrincipal Jwt jwt,
+	public Page<IncomeProjection> getIncomes(@AuthenticationPrincipal Jwt jwt,@RequestParam(required=false) Integer sortby,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
 		Long userId = Long.parseLong(jwt.getClaim("userId"));
-		return incomeService.getPaginatedIncomes(userId, page, size);
+		return incomeService.getPaginatedIncomes(userId,sortby, page, size);
 	}
 
 	@PutMapping

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,30 @@ public class IncomeService {
 		return incomeRepository.save(income);
 	}
 
-	public Page<IncomeProjection> getPaginatedIncomes(Long userId, int page, int size) {
-		return incomeRepository.findByUserId(userId, PageRequest.of(page, size));
+	public Page<IncomeProjection> getPaginatedIncomes(Long userId,Integer sortby, Integer page, Integer size) {
+		
+		Sort sort;
+		
+		switch(sortby) {
+			case 1:
+				sort = Sort.by(Sort.Direction.ASC,"income");
+				break;
+			case 2:
+				sort = Sort.by(Sort.Direction.DESC,"income");
+				break;
+			case 3:
+				sort = Sort.by(Sort.Direction.ASC,"date");
+				break;
+			case 4:
+				sort = Sort.by(Sort.Direction.DESC,"date");
+				break;
+			default:
+				sort = Sort.unsorted();
+		}
+		
+		 PageRequest pageRequest = PageRequest.of(page, size, sort);
+		
+		return incomeRepository.findByUserId(userId, pageRequest);
 	}
 	
 	public List<Income> getAllIncome(Long userId){

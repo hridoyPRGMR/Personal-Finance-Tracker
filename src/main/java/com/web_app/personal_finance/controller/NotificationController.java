@@ -65,9 +65,9 @@ public class NotificationController {
 				.filter(debt -> matchesCondition(debt, currentDayName, currentDayOfMonth, currentMonthName))
 				.map(debt -> {
 					String message = switch (debt.getInstallmentType()) {
-						case 1 -> "Installment due based on the day of the week.";
-						case 2 -> "Installment due based on the day of the month.";
-						case 3 -> "Installment due based on the month.";
+						case 1 -> "Installment must be paid on "+currentDayName;
+						case 2 -> "Installment must be paid on "+ currentDayOfMonth;
+						case 3 -> "Installments due this month.(" + currentMonthName + ")" ;
 						default -> "Unknown installment type.";
 					};
 					return new Notification(message);
