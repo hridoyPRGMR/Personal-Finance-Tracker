@@ -1,6 +1,7 @@
 package com.web_app.personal_finance.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.web_app.personal_finance.dto.IncomeRequest;
 
@@ -11,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,6 +34,8 @@ public class Income {
 
     private Double income;
     
+    private String currency;
+    
     private LocalDate date;
     
     @Column(length = 250)
@@ -40,13 +45,30 @@ public class Income {
 	
     public Income(IncomeRequest incomeRequest, User user, IncomeSource incomeSource) {
         this.income = incomeRequest.getIncome();
+        this.currency = incomeRequest.getCurrency();
         this.date = incomeRequest.getDate();
         this.description = incomeRequest.getDescription();
         this.user = user;
         this.incomeSource = incomeSource;
     }
 
+    
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+    
 	public Long getId() {
 		return id;
 	}
@@ -86,7 +108,14 @@ public class Income {
 		this.income = income;
 	}
 
-
+	public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	
 	public LocalDate getDate() {
 		return date;
 	}

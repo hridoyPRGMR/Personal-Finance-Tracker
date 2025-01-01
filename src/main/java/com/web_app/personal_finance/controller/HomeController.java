@@ -21,6 +21,7 @@ import com.web_app.personal_finance.model.User;
 import com.web_app.personal_finance.security.JwtTokenUtil;
 import com.web_app.personal_finance.service.DebtService;
 import com.web_app.personal_finance.service.ExpenseService;
+import com.web_app.personal_finance.service.HomeService;
 import com.web_app.personal_finance.service.IncomeService;
 
 @RestController
@@ -35,18 +36,25 @@ public class HomeController {
 	private ExpenseService expenseService;
 	@Autowired
 	private DebtService debtService;
-
+	
+	@Autowired
+	private HomeService homeService;
+	
 	// filter by 1=current week,2==current month,3=current year
 	@GetMapping("/summary")
-	public Summary getSummary(@AuthenticationPrincipal Jwt jwt,@RequestParam(defaultValue="1")int filterby) {
+	public Summary getSummary(@AuthenticationPrincipal Jwt jwt,@RequestParam(defaultValue="BDT")String currency,@RequestParam(defaultValue="1")int filterby) {
 		
 		User user = jwtTokenUtil.getUser(jwt);
 		
-		List<Income>incomes = incomeService.getAllIncome(user.getId());
 		List<Expense> expenses = expenseService.getAllExpenses(user.getId());
 		List<Debt> debts = debtService.getAllDebtsByUserId(user.getId());
 		
-		Double totalIncome = 0.00;
+		Double totalIncome= homeService.totalIncome(user.getId(), filterby, currency);
+		
+		
+		
+//		System.out.println(totalIncome);
+		
 		Double totalExpense = 0.00;
 		Double totalDebtsWithoutInterest = 0.00;
 		Double totalDebtsWithInterest = 0.00;
@@ -67,13 +75,7 @@ public class HomeController {
 			default:
 				throw new IllegalArgumentException("Invalid filter type");
 		}
-		
-	
-		totalIncome = incomes.stream()
-				.filter(income -> dateFilter.test(income.getDate()))
-				.mapToDouble(Income::getIncome)
-				.sum();
-		
+
 		totalExpense = expenses.stream()
 								.filter(expense -> dateFilter.test(expense.getDate()))
 								.flatMap(expense -> expense.getExpenses().stream())

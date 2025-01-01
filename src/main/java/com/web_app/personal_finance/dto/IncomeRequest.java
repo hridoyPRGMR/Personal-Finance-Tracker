@@ -11,7 +11,11 @@ public class IncomeRequest {
 	
 	@Column(nullable = false)
 	private Double income;
-
+	
+	@Column(nullable=false)
+	@Size(min=3,max=3)
+	private String currency;
+	
 	@Column(nullable = false)
 	private LocalDate date;
 
@@ -47,6 +51,14 @@ public class IncomeRequest {
 
 	public void setIncome(Double income) {
 		this.income = income;
+	}
+	
+	public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	public LocalDate getDate() {

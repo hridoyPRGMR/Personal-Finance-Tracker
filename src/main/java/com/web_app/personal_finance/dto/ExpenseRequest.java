@@ -9,7 +9,11 @@ import jakarta.validation.constraints.Size;
 public class ExpenseRequest {
 
     private Long id;
-
+    
+    @NotNull(message="Currency is required.")
+    @Size(max=3)
+    private String currency;
+    
     @NotNull(message = "Date is required")
     private LocalDate date;
 
@@ -27,7 +31,15 @@ public class ExpenseRequest {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+    
     public LocalDate getDate() {
         return date;
     }

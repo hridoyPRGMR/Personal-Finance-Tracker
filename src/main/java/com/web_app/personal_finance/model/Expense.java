@@ -17,8 +17,10 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String currency;
+    
     private LocalDate date;
-
+    
 	private String note;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "expense")
@@ -31,8 +33,9 @@ public class Expense {
     
     public Expense() {}
     
-    public Expense(LocalDate date, String note, User user) {
+    public Expense(String currency,LocalDate date, String note, User user) {
 		super();
+		this.currency=currency;
 		this.date = date;
 		this.note = note;
 		this.user = user;
@@ -63,7 +66,15 @@ public class Expense {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+    
     public LocalDate getDate() {
         return date;
     }

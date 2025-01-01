@@ -26,7 +26,7 @@ public class ExpenseService {
 
 	public Expense save(ExpenseRequest expenseReq, User user) {
 
-		Expense expense = new Expense(expenseReq.getDate(),expenseReq.getNote(),user);
+		Expense expense = new Expense(expenseReq.getCurrency(),expenseReq.getDate(),expenseReq.getNote(),user);
 		
 		mapDtoToExpense(expenseReq,expense);
 
