@@ -25,7 +25,7 @@ public class DebtService {
 
     public Debt save(DebtRequest debRequest, User user) {
 
-        Debt debt = new Debt(debRequest.getDebtType(), debRequest.getCreditor(), debRequest.getOutstandingBalance(), debRequest.getBorrowingDate(),
+        Debt debt = new Debt(debRequest.getDebtType(), debRequest.getCreditor(), debRequest.getOutstandingBalance(),debRequest.getCurrency(), debRequest.getBorrowingDate(),
                 debRequest.getLoanTenure(), debRequest.getInterestRate(), debRequest.getInterestType(), debRequest.getInstallmentType(),
                 debRequest.getDay(), debRequest.getDate(), debRequest.getMonth(), debRequest.getMinimumPayment(), debRequest.getNote(), user);
 
@@ -68,6 +68,7 @@ public class DebtService {
         existingDebt.setDebtType(debtRequest.getDebtType());
         existingDebt.setCreditor(debtRequest.getCreditor());
         existingDebt.setOutstandingBalance(debtRequest.getOutstandingBalance());
+        existingDebt.setCurrency(debtRequest.getCurrency());
         existingDebt.setBorrowingDate(debtRequest.getBorrowingDate());
         existingDebt.setLoanTenure(debtRequest.getLoanTenure());
         existingDebt.setInterestRate(debtRequest.getInterestRate());

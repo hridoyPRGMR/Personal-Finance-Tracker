@@ -21,6 +21,10 @@ public class DebtRequest {
 	@NotNull(message="OutStanding balance is required.")
 	private Double outstandingBalance;
 	
+	@NotNull(message="Currency is required.")
+	@Size(max=3,message="Currency must be 3 character.")
+	private String currency;
+	
 	@PastOrPresent(message = "The registration date cannot be in the future.")
 	private LocalDate borrowingDate;
 	
@@ -81,7 +85,15 @@ public class DebtRequest {
 	public void setOutstandingBalance(Double outstandingBalance) {
 		this.outstandingBalance = outstandingBalance;
 	}
-
+	
+	public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency=currency;
+	}
+	
 	public LocalDate getBorrowingDate() {
 		return borrowingDate;
 	}

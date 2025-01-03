@@ -46,43 +46,19 @@ public class HomeController {
 		
 		User user = jwtTokenUtil.getUser(jwt);
 		
-		List<Expense> expenses = expenseService.getAllExpenses(user.getId());
 		List<Debt> debts = debtService.getAllDebtsByUserId(user.getId());
 		
-		Double totalIncome= homeService.totalIncome(user.getId(), filterby, currency);
+		Double []incomeExpense = homeService.getIncomeRxpense(user.getId(), filterby, currency);//index 0 income and index 1 is expense
 		
+		Double totalIncome = incomeExpense[0];
+		Double totalExpense = incomeExpense[1];
 		
-		
-//		System.out.println(totalIncome);
-		
-		Double totalExpense = 0.00;
 		Double totalDebtsWithoutInterest = 0.00;
 		Double totalDebtsWithInterest = 0.00;
 		Double payOff = 0.00;
 		
-		Predicate<LocalDate> dateFilter;
-		
-		switch(filterby) {
-			case 1:
-				dateFilter = DateFilter.currentWeek();
-				break;
-			case 2:
-				dateFilter = DateFilter.currentMonth();
-				break;
-			case 3:
-				dateFilter = DateFilter.currentYear();
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid filter type");
-		}
-
-		totalExpense = expenses.stream()
-								.filter(expense -> dateFilter.test(expense.getDate()))
-								.flatMap(expense -> expense.getExpenses().stream())
-								.mapToDouble(ExpenseItem::getAmount)
-								.sum();
-		
 		for(Debt debt:debts) {
+			
 			totalDebtsWithoutInterest += debt.getOutstandingBalance();
 			totalDebtsWithInterest += debt.getOutstandingBalance() + interest(debt);
 			

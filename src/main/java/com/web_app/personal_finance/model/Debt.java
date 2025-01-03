@@ -28,6 +28,8 @@ public class Debt {
 	
 	private Double outstandingBalance;
 	
+	private String currency;
+	
 	private LocalDate borrowingDate;
 	
 	private byte loanTenure;
@@ -61,13 +63,14 @@ public class Debt {
 	
 	public Debt() {}
 	
-	public Debt(byte debtType, String creditor, Double outstandingBalance, LocalDate borrowingDate, byte loanTenure,
+	public Debt(byte debtType, String creditor, Double outstandingBalance,String currency, LocalDate borrowingDate, byte loanTenure,
 			Double interestRate, byte interestType, byte installmentType, byte day, byte date, byte month,
 			double minimumPayment, String note, User user) {
 		super();
 		this.debtType = debtType;
 		this.creditor = creditor;
 		this.outstandingBalance = outstandingBalance;
+		this.currency=currency;
 		this.borrowingDate = borrowingDate;
 		this.loanTenure = loanTenure;
 		this.interestRate = interestRate;
@@ -108,7 +111,15 @@ public class Debt {
 	public void setOutstandingBalance(Double outstandingBalance) {
 		this.outstandingBalance = outstandingBalance;
 	}
-
+	
+	public String getCurrency() {
+		return currency;
+	}
+	
+	public void setCurrency(String currency) {
+		this.currency=currency;
+	}
+	
 	public LocalDate getBorrowingDate() {
 		return borrowingDate;
 	}

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web_app.personal_finance.helper.DateFilter;
+import com.web_app.personal_finance.model.Expense;
+import com.web_app.personal_finance.model.ExpenseItem;
 import com.web_app.personal_finance.model.Income;
 
 @Service
@@ -17,15 +19,18 @@ public class HomeService {
 
 	private IncomeService incomeService;
 	private CurrencyService currencyService;
-
-	private HomeService(IncomeService incomeService, CurrencyService currencyService) {
+	private ExpenseService expenseService;
+	
+	private HomeService(IncomeService incomeService, CurrencyService currencyService,ExpenseService expenseService) {
 		this.incomeService = incomeService;
 		this.currencyService = currencyService;
+		this.expenseService = expenseService;
 	}
 
-	public Double totalIncome(long userId, int filterBy, String currency) {
+	public Double []getIncomeRxpense(long userId, int filterBy, String currency) {
 		
 		List<Income> incomes = incomeService.getAllIncome(userId);
+		List<Expense> expenses = expenseService.getAllExpenses(userId);
 		
 		Map<String, Double> currencyRates = currencyService.getExchangeRate("USD").entrySet()
 			        .stream()
@@ -59,10 +64,22 @@ public class HomeService {
 										.filter(income -> dateFilter.test(income.getDate())) 
 										.mapToDouble(income -> income.getIncome() / currencyRates.get(income.getCurrency()))
 										.sum();
-
+		
 		double totalIncomeInTargetCurrency = totalIncomeInUSD * currencyRates.get(currency);
-
-		return totalIncomeInTargetCurrency;
+			
+		double totalExpenseInUSD = expenses.stream()
+											.filter(expense -> dateFilter.test(expense.getDate()))
+											.flatMap(expense -> expense.getExpenses().stream())
+											.mapToDouble(expenseItem -> expenseItem.getAmount() / currencyRates.get(expenseItem.getExpense().getCurrency()) )
+											.sum();
+		
+		double totalExpenseInTargetCurrency = totalExpenseInUSD * currencyRates.get(currency);
+		
+		
+		
+		Double []incomeExpense = {totalIncomeInTargetCurrency,totalExpenseInTargetCurrency};
+		
+		return incomeExpense;
 	}
 
 }
