@@ -3,6 +3,7 @@ package com.web_app.personal_finance.model;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,11 +24,13 @@ public class IncomeSource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @JsonProperty("income_type")
     @NotNull(message = "income_type can not be null")
     @Column(name = "income_type") // Maps the snake_case column
     private String incomeType;   // Use camelCase for the field
 
+    @JsonProperty("income_source")
     @NotNull(message = "income_source can not be null")
     @Column(name = "income_source") // Maps the snake_case column
     private String incomeSource;  // Use camelCase for the field
@@ -49,9 +52,9 @@ public class IncomeSource {
     public IncomeSource() {
     }
 
-    public IncomeSource(String incomeType, String incomeSource, String description) {
-        this.incomeType = incomeType;
-        this.incomeSource = incomeSource;
+    public IncomeSource(String income_type, String income_source, String description) {
+        this.incomeType = income_type;
+        this.incomeSource = income_source;
         this.description = description;
     }
 

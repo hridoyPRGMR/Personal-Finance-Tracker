@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/personal_finance?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: rootpassword
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: personal_finance
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

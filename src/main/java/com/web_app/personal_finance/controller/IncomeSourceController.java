@@ -37,6 +37,8 @@ public class IncomeSourceController {
 	@PostMapping
 	public ResponseEntity<IncomeSource>createIncomeSource(@Valid @RequestBody IncomeSource incomeSource,@AuthenticationPrincipal Jwt jwt){
 		
+		System.out.println(incomeSource.toString());
+		
 		User user = jwtTokenUtil.getUser(jwt);
 		incomeSource.setUser(user);
 		IncomeSource savedIncomeSource = incomeSourceService.save(incomeSource);
@@ -52,7 +54,6 @@ public class IncomeSourceController {
 		List<IncomeSource> incomeSources = incomeSourceService.getIncomeSourceByUserId(userId);
 		
 		return ResponseEntity.ok(incomeSources);
-		
 	}
 	
 	//get only id and income_source column
